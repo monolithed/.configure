@@ -1,0 +1,36 @@
+# Binary files
+
+*.pbxproj -crlf -diff
+*.a       -crlf -diff
+*.o       -crlf -diff
+*.so      -crlf -diff
+*.lo      -crlf -diff
+*.a.out   -crlf -diff
+*.iml     -crlf -diff
+*.pyc     -crlf -diff
+*.dmg     -crlf -diff
+*.exe     -crlf -diff
+*.zip     -crlf -diff
+*.tar     -crlf -diff
+*.iso     -crlf -diff
+*.jar     -crlf -diff
+*.gzip    -crlf -diff
+*.rpm     -crlf -diff
+*.class   -crlf -diff
+
+
+# Filters
+
+*.c     filter=treatspaces
+*.cpp   filter=treatspaces
+*.hpp   filter=treatspaces
+*.h     filter=treatspaces
+*.js    filter=treatspaces
+*.py    filter=treatspaces
+*.xml   filter=treatspaces
+*.html  filter=treatspaces
+*.hs    filter=treatspaces
+*.as    filter=treatspaces 
+*.rb    filter=treatspaces
+*.java  filter=treatspaces
+

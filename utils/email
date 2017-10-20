@@ -1,0 +1,36 @@
+#! /usr/bin/env python
+# -*- coding: utf-8; indent-tabs-mode: nil; tab-width: 4; c-basic-offset: 4; -*-
+
+from __future__ import print_function
+from smtplib import SMTP
+
+
+if __name__ == '__main__':
+	def prompt(prompt):
+		return input(prompt).strip()
+
+	fromaddr = prompt('From: ')
+	toaddrs  = prompt('To: ').split()
+
+	print('Enter message, end with ^D (Unix) or ^Z (Windows):')
+
+	message = ('From: %s\r\nTo: %s\r\n\r\n' %
+	           (fromaddr, ', '.join(toaddrs)))
+
+	while True:
+		try:
+			line = input()
+		except EOFError:
+			break
+
+		if not line:
+			break
+
+		message = message + line
+
+	print('Message length is', len(message))
+
+	with SMTP('localhost') as server:
+		server.set_debuglevel(1)
+		server.sendmail(fromaddr, toaddrs, message)
+		server.quit()

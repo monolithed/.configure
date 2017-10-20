@@ -1,0 +1,9 @@
+[extensions]
+color =
+
+[color]
+custom.rev = yellow
+custom.author = bold
+
+[alias]
+lg = log --template "{label('custom.rev',node|short)}  {desc}  [{date|age} by {label('custom.author',author)}]\n"

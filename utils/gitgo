@@ -1,0 +1,112 @@
+#! /usr/bin/env sh
+
+# local variables
+branch=$1
+
+is_local=0
+is_remote=0
+
+# color variables
+color='\e[01;34m'
+color_error='\e[01;31m'
+nocolor='\e[0m'
+
+# check if we have branch name
+if [ -z $branch ]
+	then
+		echo -e "${color_error}Need branch name${nocolor}"
+		exit 1
+fi
+
+# check git status
+echo -e "==== ${color}git status${nocolor} ===="
+git status
+
+if [ $? -ne 128 ]
+	then
+		# fetch changes from origin
+		echo -e "==== ${color}git fetch origin${nocolor} ===="
+		git fetch origin
+
+		if [ "${branch#${branch%?}}" == "*" ]
+			then
+				branch="${branch%?}"
+				tmp_branch=`git branch -r | grep " origin/$branch" | tail -1 | sed s/"  origin\/"//`;
+
+				if [ "$tmp_branch" != "" ]
+					then
+						branch="$tmp_branch"
+				fi
+		fi
+
+		# check if local branch is exists
+		(git branch | grep " $1\$") >/dev/null 2>&1
+		[ $? -eq 0 ] && is_local=1
+
+		# check if remote branch is exists
+		(git branch -r | grep " origin/$1\$") >/dev/null 2>&1
+		[ $? -eq 0 ] && is_remote=1
+
+		# check if we have changes in current branch
+		status=`git status`
+
+		if [[ "$status" == *"Changed but not updated"* ]]
+			then
+				echo -e "${color_error}You have changed files in current branch${nocolor}"
+				exit 1
+		fi
+
+		# check if we are in branch already
+		(git branch | grep "^* ${branch}$") >/dev/null 2>&1
+		if [ $? -eq 0 ]
+			then
+				if [ $is_remote -eq 1 ]
+					then
+						# pull changes from remote branch
+						echo -e "==== ${color}git pull origin ${branch}${nocolor} ===="
+						git pull origin $branch
+					else
+						echo -e "Remote branch '${branch}' is not exists"
+				fi
+
+				else
+					# check if local branch is exists
+					if [ $is_local -eq 1 ]
+						then
+							echo "Branch '${branch}' is found in local repository"
+
+							# checkout in branch
+							echo -e "==== ${color}git checkout ${branch}${nocolor} ===="
+							git checkout $branch
+
+						if [ $is_remote -eq 1 ]
+							then
+								# pull changes from remote branch
+								echo -e "==== ${color}git pull origin ${branch}${nocolor} ===="
+								git pull origin $branch
+							else
+								echo -e "Remote branch '${branch}' is not exists"
+						fi
+
+						else
+							# check if remote branch is exists
+							if [ $is_remote -eq 1 ]
+								then
+									echo "Branch '${branch}' is found in remote repository"
+
+									# create new local branch
+									echo -e "==== ${color}git checkout -b ${branch} origin/${branch}${nocolor} ===="
+									git checkout -b $branch origin/$branch
+
+									# pull changes from remote branch
+									echo -e "==== ${color}git pull origin ${branch}${nocolor} ===="
+									git pull origin $branch
+								else
+
+									# branch is not found
+									echo -e "${color_error}Branch '${branch}' is not found${nocolor}"
+									exit 1
+							fi
+					fi
+		fi
+fi

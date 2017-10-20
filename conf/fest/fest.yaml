@@ -1,0 +1,11 @@
+default: &options
+    user    : www
+    path    : /usr/local/bin/node
+    proxy   : /usr/local/lib/node_modules/fest/lib/proxy.js
+
+
+example.com:
+    <<      : *options
+    pid     : /var/run/fest/example.com.pid
+    log     : /var/log/fest/example.com.log
+    config  : /usr/local/www/admin/conf/fest/example.com/fest.json

@@ -1,0 +1,6 @@
+default: &options
+    path    : /usr/local/bin/uwsgi
+
+example.com:
+    <<      : *options
+    config  : /usr/local/www/admin/conf/uwsgi/example.com/uwsgi.yaml
