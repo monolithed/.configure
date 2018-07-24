@@ -127,7 +127,7 @@ function get_git_status () {
 	elif [[ -n $BRANCH_BEHIND ]]
 		then echo -ne "${MODIFIED_COLOR}▽${RESET}"
 	elif [[ -n $DIRTY_BRANCH ]]
-		then echo -ne "${MODIFIED_COLOR}modified${RESET}"
+		then echo -ne "${MODIFIED_COLOR}*${RESET}"
 	fi
 }
 
