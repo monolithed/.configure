@@ -35,12 +35,14 @@ if tput setaf 1 &> /dev/null
 		fi
 
 		# Save common color actions
+		MODIFIED_COLOR=$(tput setaf 9)
 		BOLD=$(tput bold)
 		NORMAL=$PREPOSITION_COLOR
 		RESET=$(tput sgr0)
 	else
 		# Otherwise, use ANSI escape sequences for coloring
 		# Original colors from fork
+		MODIFIED_COLOR="\033[1;31m"
 		USER_COLOR="\033[1;31m" #MAGENTA
 		PREPOSITION_COLOR="\033[1;37m" #WHITE
 		DEVICE_COLOR="\033[1;33m" #ORANGE
@@ -104,6 +106,8 @@ function is_on_git () {
 }
 
 function get_git_status () {
+	local modified_color='\033[01;31m'
+
 	# Grab the git dirty and git behind
 	DIRTY_BRANCH="$(parse_git_dirty)"
 	BRANCH_AHEAD="$(parse_git_ahead)"
@@ -111,19 +115,19 @@ function get_git_status () {
 
 	# Iterate through all the cases and if it matches, then echo
 	if [[ $DIRTY_BRANCH == 1 && $BRANCH_AHEAD == 1 && $BRANCH_BEHIND == 1 ]]
-		then echo "⬢"
+		then echo -ne "${MODIFIED_COLOR}⬢${RESET}"
 	elif [[ $DIRTY_BRANCH == 1 && $BRANCH_AHEAD == 1 ]]
-		then echo "▲"
+		then echo -ne "${MODIFIED_COLOR}untracked files${RESET}"
 	elif [[ $DIRTY_BRANCH == 1 && $BRANCH_BEHIND == 1 ]]
-		then echo "▼"
+		then echo -ne "${MODIFIED_COLOR}▼${RESET}"
 	elif [[ $BRANCH_AHEAD == 1 && $BRANCH_BEHIND == 1 ]]
-		then echo "⬡"
+		then echo -ne "${MODIFIED_COLOR}⬡${RESET}"
 	elif [[ -n $BRANCH_AHEAD ]]
-		then echo "△"
+		then echo "${MODIFIED_COLOR}△${RESET}"
 	elif [[ -n $BRANCH_BEHIND ]]
-		then echo "▽"
+		then echo -ne "${MODIFIED_COLOR}▽${RESET}"
 	elif [[ -n $DIRTY_BRANCH ]]
-		then echo "*"
+		then echo -ne "${MODIFIED_COLOR}modified${RESET}"
 	fi
 }
 
@@ -137,7 +141,7 @@ get_git_info () {
 		OUTPUT=$BRANCH
 
 		# Add on the git status
-		OUTPUT=$OUTPUT"$(get_git_status)"
+		OUTPUT=$OUTPUT" $(get_git_status)"
 
 		# Echo our output
 		echo $OUTPUT
