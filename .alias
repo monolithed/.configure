@@ -94,14 +94,13 @@ alias sniff="sudo ngrep -d 'en1' -t \
 alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | \
 	grep -a -o -E \"Host\: .*|GET \/.*\""
 
-alias cal="cal $@ | GREP_COLOR='1;7;1' \
-	grep --color=always -C6 -E '(^| )$(date +%e)($| )'"
-
+#alias cal="cal $@ | GREP_COLOR='1;7;1' \
+#	grep --color=always -C6 -E '(^| )$(date +%e)($| )'"
 
 #==================================================================
 
 alias www='cd /usr/local/www'
 alias adduser='sudo /etc/init.d/adduser.sh'
-
+alias idea='open -a "`ls -dt /Applications/IntelliJ\ IDEA*|head -1`"'
 
 
