@@ -12,6 +12,9 @@ export CLICOLOR=1
 export TERM="xterm-color"
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
+# Don't show default interactive shell warning
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 # Postgres won't work without this
 export PGHOST=/tmp
 

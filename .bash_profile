@@ -26,7 +26,7 @@ shopt -s no_empty_cmd_completion
 # shopt -s extglob
 
 # Add private key identities to the authentication agent
-ssh-add
+#ssh-add
 
 for file in ~/.{export,alias,prompt,colors,install}
 	do [ -r "$file" ] && source "$file"
@@ -58,3 +58,4 @@ if [ -f /etc/bash_completion.d/git ];
 	then
 		. /etc/bash_completion.d/git
 fi
+
